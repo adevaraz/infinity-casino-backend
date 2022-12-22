@@ -8,7 +8,7 @@
     "dev": "nodemon ./src/server.js",
     "start": "node ./src/server.js"
   },
-  "author": "gik",
+  "author": "funproject",
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^21.1.0",
