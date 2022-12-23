@@ -1,4 +1,4 @@
-const { createAccount, getAllAccounts, getAccountById, updateAccountBalanceById, deleteAccountById } = require("./handler");
+const { createAccount, getAllAccounts, getAccountById, updateAccountBalanceById, deleteAccountById } = require("../controller/player.js");
 
 const routes = [
   {

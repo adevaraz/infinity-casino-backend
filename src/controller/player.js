@@ -1,10 +1,9 @@
-const defaultAccounts = require('./models/accounts');
+const defaultPlayers = require('../models/players');
 const path = require('path');
 const fs = require('fs');
 const logger = require('loglevel');
 
-const filePath = path.resolve(__dirname, '../data/accounts.json');
-const accounts = require('../data/accounts.json') || defaultAccounts;
+const players = defaultPlayers;
 
 const createAccount = (request, h) => {
   const { name } = request.payload;
@@ -15,10 +14,10 @@ const createAccount = (request, h) => {
   }
 
   let id;
-  if(accounts.length === 0) {
+  if(players.length === 0) {
     id = 0;
   } else {
-    id = accounts[accounts.length - 1].id + 1;
+    id = players[players.length - 1].id + 1;
   }
 
   const newAccount = {
@@ -27,9 +26,9 @@ const createAccount = (request, h) => {
     balance
   }
 
-  accounts.push(newAccount);
+  players.push(newAccount);
 
-  const isSuccess = accounts.filter((account) => account.id === id).length > 0;
+  const isSuccess = players.filter((account) => account.id === id).length > 0;
 
   if(isSuccess) {
     const response = h.response({
@@ -41,13 +40,6 @@ const createAccount = (request, h) => {
     });
 
     response.code(201);
-
-    const jsonData = JSON.stringify(accounts);
-    fs.writeFile(filePath, jsonData, function(err) {
-      if (err) {
-          console.log(err);
-      }
-    });
 
     logger.warn(`[POST] Account with id: ${id} is successfully created`);
 
@@ -67,7 +59,7 @@ const getAllAccounts = (request, h) => {
   const response = h.response({
     status: 'success',
     data: {
-      accounts,
+      accounts: players,
     }
   })
 
@@ -81,7 +73,7 @@ const getAllAccounts = (request, h) => {
 const getAccountById = (request, h) => {
   const { id } = request.params;
 
-  const account = accounts.filter((account) => account.id === parseInt(id))[0];
+  const account = players.filter((account) => account.id === parseInt(id))[0];
 
   if(account) {
     const response = h.response({
@@ -127,11 +119,11 @@ const updateAccountBalanceById = (request, h) => {
     return response;
   }
 
-  const index = accounts.findIndex((account) => account.id === parseInt(id));
+  const index = players.findIndex((account) => account.id === parseInt(id));
 
   if(index !== -1) {
-    accounts[index] = {
-      ...accounts[index],
+    players[index] = {
+      ...players[index],
       balance
     }
 
@@ -141,13 +133,6 @@ const updateAccountBalanceById = (request, h) => {
     })
   
     response.code(200);
-
-    const jsonData = JSON.stringify(accounts);
-    fs.writeFile(filePath, jsonData, function(err) {
-      if (err) {
-          console.log(err);
-      }
-    });
 
     logger.warn(`[PUT] Account with id: ${id} is successfully updated`);
 
@@ -169,23 +154,16 @@ const updateAccountBalanceById = (request, h) => {
 const deleteAccountById = (request, h) => {
   const { id } = request.params;
 
-  const index = accounts.findIndex((account) => account.id === parseInt(id));
+  const index = players.findIndex((account) => account.id === parseInt(id));
 
   if (index !== -1) {
-    accounts.splice(index, 1);
+    players.splice(index, 1);
     const response = h.response({
       status: 'success',
       message: 'Account successfully deleted',
     });
 
     response.code(200);
-
-    const jsonData = JSON.stringify(accounts);
-    fs.writeFile(filePath, jsonData, function(err) {
-      if (err) {
-          console.log(err);
-      }
-    });
 
     logger.warn(`[DELETE] Account with id: ${id} is successfully deleted`);
 
