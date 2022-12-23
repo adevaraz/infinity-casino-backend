@@ -13,9 +13,13 @@
   "dependencies": {
     "@hapi/hapi": "^21.1.0",
     "dotenv": "^16.0.3",
-    "loglevel": "^1.8.1"
+    "joi": "^17.7.0",
+    "loglevel": "^1.8.1",
+    "pg": "^8.8.0",
+    "sequelize": "^6.28.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.5.2"
   }
 }
