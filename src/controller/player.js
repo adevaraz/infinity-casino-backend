@@ -1,58 +1,46 @@
-const defaultPlayers = require('../models/players');
-const path = require('path');
-const fs = require('fs');
 const logger = require('loglevel');
+const { Player } = require('../models');
 
-const players = defaultPlayers;
+const createPlayer = async (request, h) => {
+  try {
+    const { name } = request.payload;
+    let { balance } = request.payload;
 
-const createAccount = (request, h) => {
-  const { name } = request.payload;
-  let { balance } = request.payload
+    if(!balance) {
+      balance = 0;
+    }
 
-  if(!balance) {
-    balance = 0;
-  }
+    const newAccount = { name, balance };
 
-  let id;
-  if(players.length === 0) {
-    id = 0;
-  } else {
-    id = players[players.length - 1].id + 1;
-  }
+    const result = await Player.create(newAccount);
 
-  const newAccount = {
-    id,
-    name,
-    balance
-  }
+    if(result) {
+      const response = h.response({
+        status: 'success',
+        message: 'Account succesfully created',
+        data: result,
+      });
 
-  players.push(newAccount);
+      response.code(201);
 
-  const isSuccess = players.filter((account) => account.id === id).length > 0;
+      logger.warn(`[POST] Account with id: ${result.id} is successfully created`);
 
-  if(isSuccess) {
+      return response;
+    }
+
     const response = h.response({
-      status: 'success',
-      message: 'Account succesfully created',
-      data: {
-        accountId: id,
-      },
+      status: 'failed',
+      message: 'Account failed to create',
     });
+  
+    response.code(500);
 
-    response.code(201);
-
-    logger.warn(`[POST] Account with id: ${id} is successfully created`);
+    logger.warn(`[POST] Account failed to create`);
 
     return response;
+  } catch (error) {
+    logger.error(error);
   }
-
-  const response = h.response({
-    status: 'failed',
-    message: 'Account failed to create',
-  });
-
-  response.code(500);
-  return response;
 }
 
 const getAllAccounts = (request, h) => {
@@ -183,7 +171,7 @@ const deleteAccountById = (request, h) => {
 }
 
 module.exports = {
-  createAccount,
+  createPlayer,
   getAllAccounts,
   getAccountById,
   updateAccountBalanceById,
