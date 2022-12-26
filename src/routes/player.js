@@ -1,10 +1,10 @@
-const { createPlayer, getAllPlayers, getPlayerById, updatePlayerById, deleteAccountById } = require("../controller/player.js");
+const { createPlayer, getAllPlayers, getPlayerById, updatePlayerById, deletePlayerById } = require("../controller/player.js");
 const { PLAYER_VALIDATOR } = require("../validators/player.js");
 
 const routes = [
   {
     method: 'POST',
-    path: '/accounts',
+    path: '/players',
     handler: createPlayer,
     options: {
       validate: PLAYER_VALIDATOR,
@@ -12,17 +12,17 @@ const routes = [
   },
   {
     method: 'GET',
-    path: '/accounts',
+    path: '/players',
     handler: getAllPlayers,
   },
   {
     method: 'GET',
-    path: '/accounts/{id}',
+    path: '/players/{id}',
     handler: getPlayerById,
   },
   {
     method: 'PUT',
-    path: '/accounts/{id}',
+    path: '/players/{id}',
     handler: updatePlayerById,
     options: {
       validate: PLAYER_VALIDATOR,
@@ -30,8 +30,8 @@ const routes = [
   },
   {
     method: 'DELETE',
-    path: '/accounts/{id}',
-    handler: deleteAccountById,
+    path: '/players/{id}',
+    handler: deletePlayerById,
   },
 ]
 
