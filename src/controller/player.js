@@ -62,34 +62,32 @@ const getAllPlayers = async (request, h) => {
   }
 }
 
-const getAccountById = (request, h) => {
+const getAccountById = async (request, h) => {
   const { id } = request.params;
 
-  const account = players.filter((account) => account.id === parseInt(id))[0];
+  const player = await Player.findByPk(id);
 
-  if(account) {
+  if(player) {
     const response = h.response({
       status: 'success',
-      data: {
-        account,
-      }
+      data: player,
     })
   
     response.code(200);
 
-    logger.warn(`[GET] Account with id: ${id} is successfully retrieved`);
+    logger.warn(`[GET] Player with id: ${id} is successfully retrieved`);
 
     return response;
   }
 
   const response = h.response({
     status: 'failed',
-    message: 'Account not found',
+    message: 'Player not found',
   })
 
   response.code(404);
 
-  logger.warn(`[GET] Account with id: ${id} is not found`);
+  logger.warn(`[GET] Player with id: ${id} is not found`);
 
   return response;
 }
