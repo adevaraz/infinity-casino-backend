@@ -4,6 +4,7 @@ const { sequelize } = require('./models/index.js');
 const { jwt: jwtConfig } = require('./config');
 const routes = require('./routes/player.js');
 const authRoutes = require('./routes/auth.js');
+const leaderboardRoutes = require('./routes/leaderboard');
 const { jwtStrategyRegistrationOptions } = require('./utils/jwtHelper.js');
 
 const init = async () => {
@@ -20,8 +21,11 @@ const init = async () => {
   await server.register(Jwt);
   server.auth.strategy('jwt', 'jwt', jwtStrategyRegistrationOptions);
 
+  server.auth.default('jwt');
+
   server.route(authRoutes);
   server.route(routes);
+  server.route(leaderboardRoutes);
 
   await sequelize.authenticate();
   await server.start();
