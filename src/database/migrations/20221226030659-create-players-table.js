@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { ADMIN_TABLE_NAME } = require('../../fixture/model');
+const { PLAYER_TABLE_NAME } = require('../../fixture/model');
 const { database } = require('../../config');
 
 const schemaAttributes = {
@@ -9,18 +9,18 @@ const schemaAttributes = {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  username: {
+  name: {
     allowNull: false,
     type: DataTypes.STRING
   },
-  password: {
+  balance: {
     allowNull: false,
     type: DataTypes.STRING
   }
 }
 
 const schemaOptions = {
-  tableName: ADMIN_TABLE_NAME,
+  tableName: PLAYER_TABLE_NAME,
   schema: database.schema
 }
 
