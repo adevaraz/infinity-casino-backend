@@ -1,4 +1,5 @@
 const logger = require('loglevel');
+const { Op } = require('sequelize');
 const { Player } = require('../models');
 
 const createPlayer = async (request, h) => {
@@ -6,7 +7,7 @@ const createPlayer = async (request, h) => {
     const { name } = request.payload;
     let { balance } = request.payload;
 
-    if(!balance) {
+    if (!balance) {
       balance = 0;
     }
 
@@ -14,7 +15,7 @@ const createPlayer = async (request, h) => {
 
     const result = await Player.create(newAccount);
 
-    if(result) {
+    if (result) {
       const response = h.response({
         status: 'success',
         message: 'Player succesfully created',
@@ -32,7 +33,7 @@ const createPlayer = async (request, h) => {
       status: 'failed',
       message: 'Player failed to create',
     });
-  
+
     response.code(500);
 
     logger.warn(`[POST] Player failed to create`);
@@ -41,20 +42,23 @@ const createPlayer = async (request, h) => {
   } catch (error) {
     logger.error(error);
   }
-}
+};
 
 const getAllPlayers = async (request, h) => {
   try {
-    const { limit, page } = request.query;
+    const { limit, page, search } = request.query;
     const result = await Player.findAll({
       limit: limit || 10,
-      offset: ((page - 1) * limit) || 0,
+      offset: (page - 1) * limit || 0,
+      where: {
+        ...(search ? { name: { [Op.iLike]: `%${search}%` } } : null),
+      },
     });
 
     const response = h.response({
       status: 'success',
       data: result,
-    })
+    });
 
     response.code(200);
 
@@ -64,7 +68,7 @@ const getAllPlayers = async (request, h) => {
   } catch (error) {
     logger.error(error);
   }
-}
+};
 
 const getPlayerById = async (request, h) => {
   try {
