@@ -1,11 +1,5 @@
-/**
- * models for player
- * {
- *    id: int,
- *    name: string,
- *    balance: int
- * }
- */
+const modelName = 'Player';
+const tableName = 'players';
 
 const { Model } = require("sequelize");
 

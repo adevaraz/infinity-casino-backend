@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const config = {
   database: {
@@ -10,6 +10,6 @@ const config = {
     dialect: process.env.DB_DIALECT,
     schema: process.env.DB_SCHEMA,
   }
-}
+};
 
-module.exports = config
+module.exports = config;
