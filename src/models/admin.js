@@ -1,33 +1,33 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 const { database } = require('../config')
-const { PLAYER_TABLE_NAME, PLAYER_MODEL_NAME } = require('../fixture/model');
+const { ADMIN_MODEL_NAME, ADMIN_TABLE_NAME } = require('../fixture/model');
 
 module.exports = (sequelize, DataTypes) => {
-  class Player extends Model { }
+  class Admin extends Model { }
 
-  Player.init({
+  Admin.init({
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    name: {
+    username: {
       allowNull: false,
       type: DataTypes.STRING,
     },
-    balance: {
+    password: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     }
   }, {
     sequelize,
     underscored: true,
-    tableName: PLAYER_TABLE_NAME,
+    tableName: ADMIN_TABLE_NAME,
     schema: database.schema,
-    modelName: PLAYER_MODEL_NAME,
+    modelName: ADMIN_MODEL_NAME,
     timestamps: false
   })
 
-  return Player
-};
+  return Admin
+}
