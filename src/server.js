@@ -1,5 +1,7 @@
 const Hapi = require('@hapi/hapi');
+const { sequelize } = require('./models/index.js');
 const routes = require('./routes/routes.js');
+const authRoutes = require('./routes/auth')
 
 const init = async () => {
   const server = Hapi.server({
@@ -12,8 +14,10 @@ const init = async () => {
     },
   });
 
+  server.route(authRoutes)
   server.route(routes);
 
+  await sequelize.authenticate()
   await server.start();
   console.log(`Server running on ${server.info.uri}`);
 };
