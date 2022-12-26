@@ -62,64 +62,56 @@ const getAllPlayers = async (request, h) => {
   }
 }
 
-const getAccountById = async (request, h) => {
+const getPlayerById = async (request, h) => {
+  try {
+      const { id } = request.params;
+
+    const player = await Player.findByPk(id);
+
+    if(player) {
+      const response = h.response({
+        status: 'success',
+        data: player,
+      })
+    
+      response.code(200);
+
+      logger.warn(`[GET] Player with id: ${id} is successfully retrieved`);
+
+      return response;
+    }
+
+    const response = h.response({
+      status: 'failed',
+      message: 'Player not found',
+    })
+
+    response.code(404);
+
+    logger.warn(`[GET] Player with id: ${id} is not found`);
+
+    return response;
+  } catch (error) {
+    logger.error(error);
+  }
+}
+
+const updatePlayerById = async (request, h) => {
   const { id } = request.params;
+  const { name, balance } = request.payload;
 
   const player = await Player.findByPk(id);
 
   if(player) {
-    const response = h.response({
-      status: 'success',
-      data: player,
-    })
-  
-    response.code(200);
+    player.name = name;
+    player.balance = balance;
 
-    logger.warn(`[GET] Player with id: ${id} is successfully retrieved`);
-
-    return response;
-  }
-
-  const response = h.response({
-    status: 'failed',
-    message: 'Player not found',
-  })
-
-  response.code(404);
-
-  logger.warn(`[GET] Player with id: ${id} is not found`);
-
-  return response;
-}
-
-const updateAccountBalanceById = (request, h) => {
-  const { id } = request.params;
-  const { balance } = request.payload;
-
-  if (!balance) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Please insert new balance',
-    });
-
-    response.code(400);
-
-    logger.warn(`[PUT] Account with id: ${id} is failed to be update, balance not found`);
-
-    return response;
-  }
-
-  const index = players.findIndex((account) => account.id === parseInt(id));
-
-  if(index !== -1) {
-    players[index] = {
-      ...players[index],
-      balance
-    }
+    await player.save();
 
     const response = h.response({
       status: 'success',
       message: 'Account balance successfully updated',
+      data: player,
     })
   
     response.code(200);
@@ -175,7 +167,7 @@ const deleteAccountById = (request, h) => {
 module.exports = {
   createPlayer,
   getAllPlayers,
-  getAccountById,
-  updateAccountBalanceById,
+  getPlayerById,
+  updatePlayerById,
   deleteAccountById,
 }
