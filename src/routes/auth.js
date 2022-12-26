@@ -1,11 +1,16 @@
-const { login } = require("../controller/auth")
+const Joi = require('joi');
+const { login } = require('../controller/auth');
+const { LOGIN_VALIDATOR } = require('../validators/auth');
 
 const routes = [
   {
     method: 'POST',
     path: '/auth/login',
-    handler: login
-  }
-]
+    handler: login,
+    options: {
+      validate: LOGIN_VALIDATOR,
+    },
+  },
+];
 
-module.exports = routes
+module.exports = routes;
