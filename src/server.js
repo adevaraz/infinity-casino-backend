@@ -1,7 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const { sequelize } = require('./models/index.js');
-const routes = require('./routes/routes.js');
-const authRoutes = require('./routes/auth')
+const routes = require('./routes/player.js');
+const authRoutes = require('./routes/auth.js');
 
 const init = async () => {
   const server = Hapi.server({
