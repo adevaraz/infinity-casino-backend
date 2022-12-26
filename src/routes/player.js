@@ -1,10 +1,14 @@
-const { createAccount, getAllAccounts, getAccountById, updateAccountBalanceById, deleteAccountById } = require("../controller/player.js");
+const { createPlayer, getAllAccounts, getAccountById, updateAccountBalanceById, deleteAccountById } = require("../controller/player.js");
+const { PLAYER_VALIDATOR } = require("../validators/player.js");
 
 const routes = [
   {
     method: 'POST',
     path: '/accounts',
-    handler: createAccount,
+    handler: createPlayer,
+    options: {
+      validate: PLAYER_VALIDATOR,
+    }
   },
   {
     method: 'GET',
