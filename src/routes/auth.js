@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const { login } = require('../controller/auth');
+const { LOGIN_VALIDATOR } = require('../validators/auth');
 
 const routes = [
   {
@@ -7,12 +8,7 @@ const routes = [
     path: '/auth/login',
     handler: login,
     options: {
-      validate: {
-        payload: Joi.object().keys({
-          username: Joi.string().required(),
-          password: Joi.string().required(),
-        }),
-      },
+      validate: LOGIN_VALIDATOR,
     },
   },
 ];
