@@ -1,4 +1,4 @@
-const { createPlayer, getAllAccounts, getAccountById, updateAccountBalanceById, deleteAccountById } = require("../controller/player.js");
+const { createPlayer, getAllPlayers, getAccountById, updateAccountBalanceById, deleteAccountById } = require("../controller/player.js");
 const { PLAYER_VALIDATOR } = require("../validators/player.js");
 
 const routes = [
@@ -13,7 +13,7 @@ const routes = [
   {
     method: 'GET',
     path: '/accounts',
-    handler: getAllAccounts,
+    handler: getAllPlayers,
   },
   {
     method: 'GET',

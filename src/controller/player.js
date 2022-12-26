@@ -17,25 +17,25 @@ const createPlayer = async (request, h) => {
     if(result) {
       const response = h.response({
         status: 'success',
-        message: 'Account succesfully created',
+        message: 'Player succesfully created',
         data: result,
       });
 
       response.code(201);
 
-      logger.warn(`[POST] Account with id: ${result.id} is successfully created`);
+      logger.warn(`[POST] Player with id: ${result.id} is successfully created`);
 
       return response;
     }
 
     const response = h.response({
       status: 'failed',
-      message: 'Account failed to create',
+      message: 'Player failed to create',
     });
   
     response.code(500);
 
-    logger.warn(`[POST] Account failed to create`);
+    logger.warn(`[POST] Player failed to create`);
 
     return response;
   } catch (error) {
@@ -43,19 +43,23 @@ const createPlayer = async (request, h) => {
   }
 }
 
-const getAllAccounts = (request, h) => {
-  const response = h.response({
-    status: 'success',
-    data: {
-      accounts: players,
-    }
-  })
+const getAllPlayers = async (request, h) => {
+  try {
+    const result = await Player.findAll();
 
-  response.code(200);
+    const response = h.response({
+      status: 'success',
+      data: result,
+    })
 
-  logger.warn(`[GET] All accounts are successfully retrieved`);
+    response.code(200);
 
-  return response;
+    logger.warn(`[GET] All players are successfully retrieved`);
+
+    return response;
+  } catch (error) {
+    logger.error(error);
+  }
 }
 
 const getAccountById = (request, h) => {
@@ -172,7 +176,7 @@ const deleteAccountById = (request, h) => {
 
 module.exports = {
   createPlayer,
-  getAllAccounts,
+  getAllPlayers,
   getAccountById,
   updateAccountBalanceById,
   deleteAccountById,
