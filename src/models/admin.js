@@ -6,7 +6,6 @@ const { ADMIN_MODEL_NAME, ADMIN_TABLE_NAME } = require('../fixture/model');
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {
     async verifyPassword(password) {
-      console.log(this.password);
       return bcrypt.compare(password, this.password);
     }
   }

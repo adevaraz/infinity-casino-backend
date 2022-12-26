@@ -9,6 +9,7 @@ const routes = [
     handler: login,
     options: {
       validate: LOGIN_VALIDATOR,
+      auth: false,
     },
   },
 ];
