@@ -7,15 +7,15 @@ const schemaAttributes = {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
   name: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   balance: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.INTEGER,
   }
 }
 
