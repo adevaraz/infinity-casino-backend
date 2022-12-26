@@ -133,33 +133,33 @@ const updatePlayerById = async (request, h) => {
   return response;
 }
 
-const deleteAccountById = (request, h) => {
+const deletePlayerById = async (request, h) => {
   const { id } = request.params;
 
-  const index = players.findIndex((account) => account.id === parseInt(id));
+  const player = await Player.findByPk(id);
 
-  if (index !== -1) {
-    players.splice(index, 1);
+  if (player) {
+    await player.destroy();
     const response = h.response({
       status: 'success',
-      message: 'Account successfully deleted',
+      message: 'Player successfully deleted',
     });
 
     response.code(200);
 
-    logger.warn(`[DELETE] Account with id: ${id} is successfully deleted`);
+    logger.warn(`[DELETE] Player with id: ${id} is successfully deleted`);
 
     return response;
   }
 
   const response = h.response({
     status: 'failed',
-    message: 'Account not found',
+    message: 'Player not found',
   })
 
   response.code(404);
 
-  logger.warn(`[DELETE] Account with id: ${id} is not found`);
+  logger.warn(`[DELETE] Player with id: ${id} is not found`);
 
   return response;
 }
@@ -169,5 +169,5 @@ module.exports = {
   getAllPlayers,
   getPlayerById,
   updatePlayerById,
-  deleteAccountById,
+  deletePlayerById,
 }
