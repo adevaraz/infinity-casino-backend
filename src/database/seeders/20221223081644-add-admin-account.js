@@ -1,25 +1,18 @@
 'use strict';
+const { Admin } = require('../../models');
+
+const adminData = {
+  username: 'admin',
+  password: 'admin1234',
+};
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+    await Admin.create(adminData);
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await Admin.destroy({ where: { username: adminData.username } });
   }
 };
