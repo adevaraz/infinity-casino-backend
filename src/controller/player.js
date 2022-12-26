@@ -45,7 +45,11 @@ const createPlayer = async (request, h) => {
 
 const getAllPlayers = async (request, h) => {
   try {
-    const result = await Player.findAll();
+    const { limit, page } = request.query;
+    const result = await Player.findAll({
+      limit: limit || 10,
+      offset: ((page - 1) * limit) || 0,
+    });
 
     const response = h.response({
       status: 'success',
