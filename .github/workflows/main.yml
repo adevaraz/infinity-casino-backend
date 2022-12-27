@@ -1,0 +1,28 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - develop
+      
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Deploy Using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            cd projects/infinity-casino-backend
+            git pull origin master
+            git status
+            npm install
+            pm2 reload "infinity-casino-be"
+            pm2 restart "infinity-casino-be"
