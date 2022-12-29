@@ -13,6 +13,17 @@ const createPlayer = async (request, h) => {
 
     const newAccount = { name, balance };
 
+    const playerWithSameName = await Player.findOne({ where: { name: { [Op.iLike]: name } } });
+
+    if (playerWithSameName) {
+      return h
+        .response({
+          status: 'failed',
+          message: 'Player already exists',
+        })
+        .code(400);
+    }
+
     const result = await Player.create(newAccount);
 
     if (result) {
