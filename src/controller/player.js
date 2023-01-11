@@ -59,7 +59,7 @@ const getAllPlayers = async (request, h) => {
   try {
     const { limit, page, search } = request.query;
     const result = await Player.findAll({
-      limit: limit || 10,
+      limit: limit || 100,
       offset: (page - 1) * limit || 0,
       where: {
         ...(search ? { name: { [Op.iLike]: `%${search}%` } } : null),
